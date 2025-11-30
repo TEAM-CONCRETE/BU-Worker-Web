@@ -25,6 +25,7 @@ export default function RegisterPage() {
     confirmPassword?: string;
     secretKey?: string;
   }>({});
+  const checkedUserIdRef = React.useRef<string>("");
 
   const registerMutation = useRegister();
   const checkUserIdMutation = useCheckUserIdExists();
@@ -38,11 +39,18 @@ export default function RegisterPage() {
       return;
     }
 
+    const currentUserId = userId.trim();
+    checkedUserIdRef.current = currentUserId;
     setIsUserIdChecked(false);
     setFieldErrors((prev) => ({ ...prev, userId: undefined }));
 
-    checkUserIdMutation.mutate(userId.trim(), {
+    checkUserIdMutation.mutate(currentUserId, {
       onSuccess: (response) => {
+        // 요청 시점의 userId와 현재 userId가 다르면 무시 (race condition 방지)
+        if (checkedUserIdRef.current !== userId.trim()) {
+          return;
+        }
+
         if (response.success && response.data) {
           if (response.data.exists) {
             setFieldErrors((prev) => ({
@@ -57,6 +65,11 @@ export default function RegisterPage() {
         }
       },
       onError: (error) => {
+        // 요청 시점의 userId와 현재 userId가 다르면 무시 (race condition 방지)
+        if (checkedUserIdRef.current !== userId.trim()) {
+          return;
+        }
+
         setFieldErrors((prev) => ({
           ...prev,
           userId: error.message || "중복확인에 실패했습니다.",
