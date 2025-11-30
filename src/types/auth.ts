@@ -71,3 +71,26 @@ export interface UserIdExistsResponseData {
 }
 
 export type UserIdExistsResponse = ApiResponse<UserIdExistsResponseData>;
+
+export interface RegisterStep2Request {
+  registrationToken: string;
+  residentNum: string;
+  phone: string;
+  email: string;
+  empAddress: string;
+  emergencyPhone: string;
+}
+
+export interface RegisterStep2VerificationRequired {
+  phone: boolean;
+  email: boolean;
+}
+
+export interface RegisterStep2ResponseData {
+  user: RegisterUserData;
+  profile: RegisterProfileData;
+  verificationRequired: RegisterStep2VerificationRequired;
+  linking: RegisterLinkingData;
+}
+
+export type RegisterStep2Response = ApiResponse<RegisterStep2ResponseData>;
