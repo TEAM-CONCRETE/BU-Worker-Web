@@ -117,7 +117,8 @@ export default function RegisterPage() {
     secretKey.trim().length > 0 &&
     agreeTerms &&
     agreePrivacy &&
-    passwordMatching;
+    passwordMatching &&
+    isUserIdChecked;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
