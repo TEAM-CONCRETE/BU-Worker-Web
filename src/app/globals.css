@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -29,38 +31,6 @@
   --worker-surface-darker: #111827;
   --worker-accent-ring-blue: #93c5fd;
   --worker-accent-handle-gray: #949494;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-pretendard);
-
-  --color-worker-primary-700: var(--worker-primary-700);
-  --color-worker-primary-600: var(--worker-primary-600);
-  --color-worker-primary-50: var(--worker-primary-50);
-
-  --color-worker-neutral-50: var(--worker-neutral-50);
-  --color-worker-neutral-75: var(--worker-neutral-75);
-  --color-worker-neutral-100: var(--worker-neutral-100);
-  --color-worker-neutral-200: var(--worker-neutral-200);
-  --color-worker-neutral-300: var(--worker-neutral-300);
-  --color-worker-neutral-400: var(--worker-neutral-400);
-  --color-worker-neutral-500: var(--worker-neutral-500);
-  --color-worker-neutral-600: var(--worker-neutral-600);
-  --color-worker-neutral-700: var(--worker-neutral-700);
-  --color-worker-neutral-900: var(--worker-neutral-900);
-  --color-worker-disabled: var(--worker-disabled);
-  --color-worker-placeholder: var(--worker-placeholder);
-
-  --color-worker-success: var(--worker-success);
-  --color-worker-warning: var(--worker-warning);
-  --color-worker-danger: var(--worker-danger);
-
-  --color-worker-surface-dark: var(--worker-surface-dark);
-  --color-worker-surface-darker: var(--worker-surface-darker);
-  --color-worker-accent-ring-blue: var(--worker-accent-ring-blue);
-  --color-worker-accent-handle-gray: var(--worker-accent-handle-gray);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -99,8 +69,27 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
-    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
-    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", sans-serif;
+  font-family:
+    var(--font-pretendard),
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    sans-serif;
+}
+
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.safe-area-inset-top {
+  padding-top: env(safe-area-inset-top, 0);
 }
