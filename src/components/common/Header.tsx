@@ -33,14 +33,12 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
         ref={ref}
         className={cn(
           "fixed top-0 left-0 right-0 z-40",
-          "bg-white border-b border-worker-neutral-200",
-          "safe-area-inset-top",
+          "bg-worker-neutral-50",
           className
         )}
         role="banner"
       >
-        <div className="flex items-center justify-between h-[33px] px-4">
-          {/* 왼쪽: 뒤로가기 버튼 */}
+        <div className="flex items-center justify-between h-[56px] px-4 safe-area-inset-top">
           <div className="flex items-center min-w-0 flex-shrink-0">
             {showBackButton && (
               <button
@@ -66,7 +64,6 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
             )}
           </div>
 
-          {/* 중앙: 제목 */}
           <h1
             className={cn(
               "flex-1 text-center",
@@ -80,7 +77,6 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
             {title}
           </h1>
 
-          {/* 오른쪽: 옵션 버튼 */}
           <div className="flex items-center min-w-0 flex-shrink-0">
             {rightAction && (
               <div className="flex items-center justify-center">
