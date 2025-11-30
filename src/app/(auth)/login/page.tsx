@@ -5,25 +5,36 @@ import Link from "next/link";
 import { Header } from "@/components/common";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLogin } from "@/hooks/useLogin";
 
 export default function LoginPage() {
   const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [autoLogin, setAutoLogin] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  const loginMutation = useLogin();
 
   const isValid = userId.trim().length > 0 && password.trim().length > 0;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!isValid || loading) return;
+    if (!isValid || loginMutation.isPending) return;
 
-    setLoading(true);
-    try {
-      // TODO: 로그인 API 연동
-    } finally {
-      setLoading(false);
-    }
+    setError(null);
+
+    loginMutation.mutate(
+      {
+        username: userId.trim(),
+        password,
+        rememberMe: autoLogin,
+      },
+      {
+        onError: (error) => {
+          setError(error.message || "로그인에 실패했습니다.");
+        },
+      }
+    );
   };
 
   return (
@@ -42,7 +53,12 @@ export default function LoginPage() {
               required
               fullWidth
               value={userId}
-              onChange={(event) => setUserId(event.target.value)}
+              onChange={(event) => {
+                setUserId(event.target.value);
+                setError(null);
+              }}
+              error={!!error}
+              errorMessage={error || undefined}
             />
 
             <Input
@@ -52,7 +68,11 @@ export default function LoginPage() {
               required
               fullWidth
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                setError(null);
+              }}
+              error={!!error}
             />
 
             <div className="flex items-center justify-between text-sm">
@@ -82,8 +102,8 @@ export default function LoginPage() {
               variant="primary"
               size="md"
               fullWidth
-              loading={loading}
-              disabled={!isValid || loading}
+              loading={loginMutation.isPending}
+              disabled={!isValid || loginMutation.isPending}
               className="h-[46px] text-xl font-bold"
             >
               로그인

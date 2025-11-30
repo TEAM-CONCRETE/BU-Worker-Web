@@ -10,7 +10,10 @@ export async function apiClient<T>(
   endpoint: string,
   options?: RequestInit
 ): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const normalizedEndpoint = endpoint.startsWith("/api")
+    ? endpoint
+    : `/api${endpoint}`;
+  const url = `${API_BASE_URL}${normalizedEndpoint}`;
 
   const response = await fetch(url, {
     ...options,
