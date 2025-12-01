@@ -278,7 +278,7 @@ export default function RegisterStep3Page() {
               />
               <canvas
                 ref={canvasRef}
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full scale-x-[-1]"
               />
 
               {/* 원형 가이드 */}
