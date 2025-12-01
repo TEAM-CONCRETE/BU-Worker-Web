@@ -35,6 +35,16 @@ export const SignaturePad = React.forwardRef<
     return () => window.removeEventListener("resize", updateCanvasSize);
   }, []);
 
+  // canvas 크기 변경 시 isEmpty 상태 업데이트
+  // canvas 크기가 변경되면 내용이 지워지므로 상태를 동기화
+  React.useEffect(() => {
+    if (canvasRef.current) {
+      const empty = canvasRef.current.isEmpty();
+      setIsEmpty(empty);
+      onSignatureChange?.(empty);
+    }
+  }, [canvasSize.width, canvasSize.height, onSignatureChange]);
+
   // 외부에서 서명 데이터를 가져올 수 있도록 ref 노출
   React.useImperativeHandle(ref, () => ({
     getSignature: () => {
