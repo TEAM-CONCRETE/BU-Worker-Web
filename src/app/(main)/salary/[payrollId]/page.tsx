@@ -15,24 +15,7 @@ export default function PayslipViewPage() {
     data: documentData,
     isLoading,
     error,
-    refetch,
   } = usePayslipDocument(payrollId);
-
-  const retryCountRef = React.useRef(0);
-  const maxRetries = 3;
-
-  React.useEffect(() => {
-    if (error && retryCountRef.current < maxRetries) {
-      const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000);
-      const retryTimer = setTimeout(() => {
-        retryCountRef.current += 1;
-        refetch();
-      }, delay);
-      return () => clearTimeout(retryTimer);
-    } else if (!error) {
-      retryCountRef.current = 0;
-    }
-  }, [error, refetch]);
 
   const handleBackClick = () => {
     router.back();
