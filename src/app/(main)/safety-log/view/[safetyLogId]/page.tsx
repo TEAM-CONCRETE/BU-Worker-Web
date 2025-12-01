@@ -18,13 +18,21 @@ export default function SafetyLogViewPage() {
     refetch,
   } = useSafetyLogDocument(safetyLogId);
 
-  // 에러 발생 시 재시도
+  // 에러 발생 시 재시도 (최대 3회, 지수 백오프)
+  const retryCountRef = React.useRef(0);
+  const maxRetries = 3;
+
   React.useEffect(() => {
-    if (error) {
+    if (error && retryCountRef.current < maxRetries) {
+      const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000); // 최대 10초
       const retryTimer = setTimeout(() => {
+        retryCountRef.current += 1;
         refetch();
-      }, 2000);
+      }, delay);
       return () => clearTimeout(retryTimer);
+    } else if (!error) {
+      // 에러가 해결되면 재시도 카운터 리셋
+      retryCountRef.current = 0;
     }
   }, [error, refetch]);
 
