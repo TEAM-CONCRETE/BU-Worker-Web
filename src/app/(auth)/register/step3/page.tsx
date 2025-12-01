@@ -110,6 +110,12 @@ export default function RegisterStep3Page() {
               onError: (error) => {
                 setError(error.message || "얼굴 등록에 실패했습니다.");
                 setIsCompleted(false);
+                setCurrentStep("detecting");
+                isCapturingRef.current = false;
+                if (livenessTimeoutRef.current) {
+                  window.clearTimeout(livenessTimeoutRef.current);
+                  livenessTimeoutRef.current = null;
+                }
               },
             });
           }
