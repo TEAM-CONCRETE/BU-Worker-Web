@@ -1,10 +1,9 @@
 export async function calculateHashFromBytes(
   data: Uint8Array
 ): Promise<string> {
-  // Web Crypto API는 BufferSource를 요구하므로 ArrayBuffer로 변환해서 전달
   const hashBuffer = await crypto.subtle.digest(
     "SHA-256",
-    data.buffer as ArrayBuffer
+    data as unknown as BufferSource
   );
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray
