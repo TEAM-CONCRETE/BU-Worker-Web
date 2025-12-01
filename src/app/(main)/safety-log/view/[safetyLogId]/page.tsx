@@ -78,7 +78,7 @@ export default function SafetyLogViewPage() {
       <div className="flex w-full max-w-[353px] mx-auto flex-col px-4 pt-20">
         <section className="mb-4">
           <p className="text-sm text-worker-neutral-500 mb-2">
-            계약 내용을 확인하고 서명해주세요.
+            서명이 완료된 안전교육일지입니다.
           </p>
         </section>
 
