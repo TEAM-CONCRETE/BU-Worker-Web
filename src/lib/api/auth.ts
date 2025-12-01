@@ -20,6 +20,11 @@ export const authApi = {
       body: JSON.stringify(data),
     });
   },
+  refreshToken: async (): Promise<LoginResponse> => {
+    return apiClient<LoginResponse>("/v1/auth/token/refresh", {
+      method: "POST",
+    });
+  },
   register: async (data: RegisterRequest): Promise<RegisterResponse> => {
     return apiClient<RegisterResponse>("/v1/auth/register/employee/step1", {
       method: "POST",
