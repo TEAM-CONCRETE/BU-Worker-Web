@@ -183,9 +183,9 @@ export default function RegisterStep3Page() {
       if (detectionIntervalRef.current) {
         window.clearInterval(detectionIntervalRef.current);
       }
-      if (livenessTimeoutRef.current) {
-        window.clearTimeout(livenessTimeoutRef.current);
-      }
+      // livenessTimeoutRef는 cleanup에서 clear하지 않음
+      // currentStep 변경으로 인한 effect 재실행 시 timeout이 취소되는 것을 방지
+      // 컴포넌트 언마운트 시에는 카메라 cleanup에서 정리됨
     };
   }, [modelsLoaded, currentStep, isCompleted, captureFace]);
 
