@@ -100,10 +100,15 @@ export function useSubmitSafetyLogSignature() {
       );
     },
     onSuccess: async (_, variables) => {
-      // 서명 완료 후 문서 쿼리 캐시 무효화
-      await queryClient.invalidateQueries({
-        queryKey: ["safety-log-document", variables.logId],
-      });
+      // 서명 완료 후 관련 쿼리 캐시 무효화
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["safety-log-document", variables.logId],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["home"],
+        }),
+      ]);
 
       toast.success("안전교육일지 서명이 완료되었습니다!");
 
