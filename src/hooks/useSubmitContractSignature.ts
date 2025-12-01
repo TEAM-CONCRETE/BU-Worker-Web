@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -17,6 +18,15 @@ interface SubmitContractSignatureParams {
 export function useSubmitContractSignature() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return useMutation({
     mutationFn: async ({
@@ -104,8 +114,9 @@ export function useSubmitContractSignature() {
       toast.success("근로계약서 서명이 완료되었습니다!");
 
       // PDF 생성 대기 시간을 두고 페이지 이동
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         router.push(`/contract/view/${variables.contractId}`);
+        timeoutRef.current = null;
       }, 1000);
     },
     onError: (error: Error & { code?: string; status?: number }) => {
