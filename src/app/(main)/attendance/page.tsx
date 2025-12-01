@@ -169,8 +169,10 @@ export default function AttendancePage() {
         <div
           className="absolute top-[56px] left-0 right-0 flex items-center justify-center w-full bg-[#f9fafb] z-10"
           style={{
-            height: `${Math.min(pullDistance, PULL_THRESHOLD * 1.5)}px`,
-            transform: `translateY(${pullDistance > 0 ? 0 : -60}px)`,
+            height: isRefetching
+              ? `${PULL_THRESHOLD}px`
+              : `${Math.min(pullDistance, PULL_THRESHOLD * 1.5)}px`,
+            transform: `translateY(${pullDistance > 0 || isRefetching ? 0 : -60}px)`,
             transition:
               pullDistance === 0 && !isRefetching
                 ? "transform 0.3s ease-out"
