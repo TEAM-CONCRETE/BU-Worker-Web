@@ -13,12 +13,7 @@ const PROTECTED_PATH_PREFIXES = [
   "/register/step3",
 ];
 
-const AUTH_COOKIE_CANDIDATES = [
-  "accessToken",
-  "ACCESS_TOKEN",
-  "refreshToken",
-  "refresh_token",
-];
+const AUTH_COOKIE_CANDIDATES = ["refreshToken"];
 
 function isProtectedPath(pathname: string) {
   // 정적 파일, Next 내부 경로는 제외
