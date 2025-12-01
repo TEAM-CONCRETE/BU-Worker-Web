@@ -15,6 +15,8 @@ export interface LoginResponseData {
   employeeId?: number;
   managerId?: number;
   siteId?: number;
+  hasRequiredInfo?: boolean;
+  hasProfileImage?: boolean;
 }
 
 export type LoginResponse = ApiResponse<LoginResponseData>;
@@ -94,3 +96,29 @@ export interface RegisterStep2ResponseData {
 }
 
 export type RegisterStep2Response = ApiResponse<RegisterStep2ResponseData>;
+
+// Presigned URL 발급 요청 타입
+export interface PresignedUrlRequest {
+  resourceType: string;
+  fileExtension: string;
+  employeeId?: number;
+}
+
+// Presigned URL 발급 응답 데이터 타입
+export interface PresignedUrlResponseData {
+  uploadUrl: string;
+  expiresAt: string;
+  s3Key: string;
+  bucket: string;
+}
+
+// Presigned URL 발급 응답 타입
+export type PresignedUrlResponse = ApiResponse<PresignedUrlResponseData>;
+
+// 얼굴 등록 요청 타입
+export interface RegisterFaceRequest {
+  uploadId: string;
+}
+
+// 얼굴 등록 응답 타입 (data가 string)
+export type RegisterFaceResponse = ApiResponse<string>;
