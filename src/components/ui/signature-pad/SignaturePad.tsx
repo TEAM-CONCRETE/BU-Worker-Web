@@ -15,11 +15,17 @@ export const SignaturePad = React.forwardRef<
 >(({ onSignatureChange, onSignatureComplete, className }, ref) => {
   const canvasRef = React.useRef<SignatureCanvas>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const onSignatureChangeRef = React.useRef(onSignatureChange);
   const [isEmpty, setIsEmpty] = React.useState(true);
   const [canvasSize, setCanvasSize] = React.useState({
     width: 400,
     height: 176,
   });
+
+  // onSignatureChange callback의 최신 참조 유지
+  React.useEffect(() => {
+    onSignatureChangeRef.current = onSignatureChange;
+  }, [onSignatureChange]);
 
   // 컨테이너 크기에 맞춰 canvas 해상도 설정
   React.useEffect(() => {
@@ -41,9 +47,10 @@ export const SignaturePad = React.forwardRef<
     if (canvasRef.current) {
       const empty = canvasRef.current.isEmpty();
       setIsEmpty(empty);
-      onSignatureChange?.(empty);
+      // canvasSize 변경 시에만 onSignatureChange 호출
+      onSignatureChangeRef.current?.(empty);
     }
-  }, [canvasSize.width, canvasSize.height, onSignatureChange]);
+  }, [canvasSize.width, canvasSize.height]);
 
   // 외부에서 서명 데이터를 가져올 수 있도록 ref 노출
   React.useImperativeHandle(ref, () => ({
