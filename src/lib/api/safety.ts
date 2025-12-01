@@ -13,7 +13,7 @@ export const safetyApi = {
     logId: number
   ): Promise<DocumentUrlApiResponse> => {
     return apiClient<DocumentUrlApiResponse>(
-      `/documents/safety-education-logs/${logId}`,
+      `/v1/documents/safety-education-logs/${logId}`,
       {
         method: "GET",
       }
