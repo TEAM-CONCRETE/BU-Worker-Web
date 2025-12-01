@@ -23,7 +23,7 @@ export default function EntryPage() {
         </h1>
       </div>
 
-      <div className="w-full max-w-[353px] space-y-3 mt-auto mb-8">
+      <div className="w-full max-w-[353px] space-y-3 mt-auto mb-16">
         <Link href="/login" className="block">
           <Button
             variant="primary"
