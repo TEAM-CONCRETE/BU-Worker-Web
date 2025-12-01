@@ -42,13 +42,17 @@ export function useRegisterFace() {
         uploadId: s3Key,
       });
 
+      if (!registerResponse.success) {
+        throw new Error(
+          registerResponse.message || "얼굴 등록에 실패했습니다."
+        );
+      }
+
       return registerResponse;
     },
-    onSuccess: (response) => {
-      if (response.success) {
-        // 얼굴 등록 완료 후 home으로 이동
-        router.push("/home?registered=true");
-      }
+    onSuccess: () => {
+      // 얼굴 등록 완료 후 home으로 이동
+      router.push("/home?registered=true");
     },
   });
 }
