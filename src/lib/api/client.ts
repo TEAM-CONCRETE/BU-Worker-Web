@@ -11,9 +11,50 @@ interface ApiClientError extends Error {
   status: number;
 }
 
+let refreshPromise: Promise<void> | null = null;
+
+async function refreshAccessToken() {
+  if (!refreshPromise) {
+    const url = `${API_BASE_URL}/api/v1/auth/token/refresh`;
+
+    refreshPromise = (async () => {
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        try {
+          const { useAuthStore } = await import("@/store/authStore");
+          useAuthStore.getState().logout();
+        } catch {
+          // authStore import 실패 시는 무시
+        }
+
+        throw new Error("토큰 재발급에 실패했습니다.");
+      }
+
+      try {
+        const data = await response.json();
+        if (data?.success && data?.data) {
+          const { useAuthStore } = await import("@/store/authStore");
+          useAuthStore.getState().setUser(data.data);
+        }
+      } catch {
+        // JSON 파싱 실패 시에도 토큰은 쿠키로 갱신된 상태이므로 치명적이지 않음
+      }
+    })().finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  return refreshPromise;
+}
+
 export async function apiClient<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
+  _retry = true
 ): Promise<T> {
   const normalizedEndpoint = endpoint.startsWith("/api")
     ? endpoint
@@ -26,11 +67,29 @@ export async function apiClient<T>(
     headers.set("Content-Type", "application/json");
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    credentials: "include",
-  });
+  const doRequest = async (): Promise<Response> => {
+    return fetch(url, {
+      ...options,
+      headers,
+      credentials: "include",
+    });
+  };
+
+  let response = await doRequest();
+
+  if (
+    (response.status === 401 || response.status === 403) &&
+    !normalizedEndpoint.includes("/v1/auth/token/refresh") &&
+    _retry
+  ) {
+    try {
+      await refreshAccessToken();
+      response = await doRequest();
+    } catch {
+      // 리프레시 실패 시에는 이후 로직에서 에러 처리
+      response = response;
+    }
+  }
 
   if (!response.ok) {
     let error: ApiError;

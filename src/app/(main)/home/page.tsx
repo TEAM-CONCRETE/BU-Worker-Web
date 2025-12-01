@@ -1,20 +1,22 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAuthStore } from "@/store/authStore";
 import { useHomeData } from "@/hooks/useHomeData";
 
 export default function HomePage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const hasShownToast = React.useRef(false);
   const user = useAuthStore((state) => state.user);
   const { data: homeData, isLoading, error } = useHomeData();
 
   React.useEffect(() => {
-    const registered = searchParams.get("registered");
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const registered = params.get("registered");
 
     if (registered === "true" && !hasShownToast.current) {
       hasShownToast.current = true;
@@ -22,7 +24,7 @@ export default function HomePage() {
 
       router.replace("/home");
     }
-  }, [searchParams, router]);
+  }, [router]);
 
   return (
     <div className="flex min-h-screen flex-col bg-worker-neutral-50 pb-24">
