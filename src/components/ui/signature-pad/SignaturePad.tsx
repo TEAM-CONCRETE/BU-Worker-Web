@@ -14,7 +14,26 @@ export const SignaturePad = React.forwardRef<
   SignaturePadProps
 >(({ onSignatureChange, onSignatureComplete, className }, ref) => {
   const canvasRef = React.useRef<SignatureCanvas>(null);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [isEmpty, setIsEmpty] = React.useState(true);
+  const [canvasSize, setCanvasSize] = React.useState({
+    width: 400,
+    height: 176,
+  });
+
+  // 컨테이너 크기에 맞춰 canvas 해상도 설정
+  React.useEffect(() => {
+    const updateCanvasSize = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        setCanvasSize({ width: width || 400, height: 176 });
+      }
+    };
+
+    updateCanvasSize();
+    window.addEventListener("resize", updateCanvasSize);
+    return () => window.removeEventListener("resize", updateCanvasSize);
+  }, []);
 
   // 외부에서 서명 데이터를 가져올 수 있도록 ref 노출
   React.useImperativeHandle(ref, () => ({
@@ -54,12 +73,14 @@ export const SignaturePad = React.forwardRef<
   return (
     <div className={`w-full ${className || ""}`}>
       <div className="bg-white rounded-xl border border-worker-neutral-200 p-4">
-        <div className="relative">
+        <div ref={containerRef} className="relative">
           <SignatureCanvas
             ref={canvasRef}
             canvasProps={{
               className: "w-full border border-worker-neutral-200 rounded-lg",
               style: { touchAction: "none", height: "176px" },
+              width: canvasSize.width,
+              height: canvasSize.height,
             }}
             onEnd={handleEnd}
             backgroundColor="#ffffff"
