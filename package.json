@@ -27,12 +27,14 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.11",
+    "@types/react-signature-canvas": "^1.0.7",
     "clsx": "^2.1.1",
     "face-api.js": "^0.22.2",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.6.0",
+    "react-signature-canvas": "^1.1.0-alpha.2",
     "tailwind-merge": "^3.4.0",
     "zustand": "^5.0.9"
   },
