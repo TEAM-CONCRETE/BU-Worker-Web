@@ -13,7 +13,7 @@ export const contractApi = {
     contractId: number
   ): Promise<DocumentUrlApiResponse> => {
     return apiClient<DocumentUrlApiResponse>(
-      `/documents/contracts/${contractId}`,
+      `/v1/documents/contracts/${contractId}`,
       {
         method: "GET",
       }

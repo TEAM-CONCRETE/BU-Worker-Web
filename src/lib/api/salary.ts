@@ -33,7 +33,7 @@ export const salaryApi = {
     payrollId: number
   ): Promise<DocumentUrlApiResponse> => {
     return apiClient<DocumentUrlApiResponse>(
-      `/documents/payroll/${payrollId}`,
+      `/v1/documents/payroll/${payrollId}`,
       {
         method: "GET",
       }
