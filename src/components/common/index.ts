@@ -1,7 +1,4 @@
-export {
-  BottomNavigation,
-  type BottomNavigationProps,
-} from "@/components/common/BottomNavigation";
+export { BottomNavigation } from "@/components/common/BottomNavigation";
 export { Header, type HeaderProps } from "@/components/common/Header";
 export {
   HomeIcon,
