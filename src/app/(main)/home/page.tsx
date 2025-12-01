@@ -44,11 +44,16 @@ export default function HomePage() {
               </h2>
               <div className="space-y-3">
                 {homeData.pendingContracts.items.map((item, index) => {
-                  if (item.type === "CONTRACT") {
+                  if (item.type === "CONTRACT" && item.contractId) {
                     return (
                       <button
                         key={`contract-${item.contractId}-${index}`}
                         type="button"
+                        onClick={() =>
+                          router.push(
+                            `/contract/sign/${item.contractId}?siteId=${item.siteId}`
+                          )
+                        }
                         className="w-full bg-[#eaf3fc] rounded-xl border border-worker-neutral-200 px-5 py-4 flex items-center justify-between hover:bg-[#d4e7f9] transition-colors"
                       >
                         <span className="text-base font-semibold text-[#12436d]">
@@ -69,11 +74,24 @@ export default function HomePage() {
                         </svg>
                       </button>
                     );
-                  } else if (item.type === "SAFETY_LOG") {
+                  } else if (
+                    item.type === "SAFETY_LOG" ||
+                    item.type === "SAFETY_EDUCATION"
+                  ) {
+                    // safetyLogId가 없어도 타입이 SAFETY_LOG 또는 SAFETY_EDUCATION이면 표시
+                    const logId = item.safetyLogId;
+                    if (!logId) {
+                      return null;
+                    }
                     return (
                       <button
-                        key={`safety-${item.safetyLogId}-${index}`}
+                        key={`safety-${logId}-${index}`}
                         type="button"
+                        onClick={() =>
+                          router.push(
+                            `/safety-log/sign/${logId}?siteId=${item.siteId}`
+                          )
+                        }
                         className="w-full bg-[#eaf3fc] rounded-xl border border-worker-neutral-200 px-5 py-4 flex items-center justify-between hover:bg-[#d4e7f9] transition-colors"
                       >
                         <span className="text-base font-semibold text-[#12436d]">
