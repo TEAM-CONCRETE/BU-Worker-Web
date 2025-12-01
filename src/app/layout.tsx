@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { Toaster } from "react-hot-toast";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -45,6 +46,24 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: "#363636",
+              color: "#fff",
+            },
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: "#1F70B7",
+                secondary: "#fff",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

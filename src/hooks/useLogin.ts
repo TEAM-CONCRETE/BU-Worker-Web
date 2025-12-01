@@ -25,7 +25,12 @@ export function useLogin() {
     onSuccess: (response) => {
       if (response.success && response.data) {
         setUser(response.data);
-        router.push("/home");
+
+        if (response.data.hasProfileImage === false) {
+          router.push("/register/step3");
+        } else {
+          router.push("/home");
+        }
       }
     },
   });
