@@ -17,6 +17,8 @@ export default function RegisterStep3Page() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const streamRef = React.useRef<MediaStream | null>(null);
   const detectionIntervalRef = React.useRef<number | null>(null);
+  const livenessTimeoutRef = React.useRef<number | null>(null);
+  const isCapturingRef = React.useRef(false);
 
   const [currentStep, setCurrentStep] =
     React.useState<FaceRegistrationStep>("detecting");
@@ -72,6 +74,9 @@ export default function RegisterStep3Page() {
       }
       if (detectionIntervalRef.current) {
         window.clearInterval(detectionIntervalRef.current);
+      }
+      if (livenessTimeoutRef.current) {
+        window.clearTimeout(livenessTimeoutRef.current);
       }
     };
   }, []);
@@ -137,12 +142,20 @@ export default function RegisterStep3Page() {
           // 정면 정렬 확인
           if (currentStep === "aligning") {
             const aligned = isFaceAligned(detection.landmarks);
-            if (aligned) {
+            if (aligned && !isCapturingRef.current) {
               setCurrentStep("liveness");
+              isCapturingRef.current = true;
+
+              // 기존 timeout이 있으면 정리
+              if (livenessTimeoutRef.current) {
+                window.clearTimeout(livenessTimeoutRef.current);
+              }
+
               // 간단한 라이브니스 감지 (여기서는 1초 대기 후 캡처로 간주)
-              setTimeout(() => {
+              livenessTimeoutRef.current = window.setTimeout(() => {
                 setCurrentStep("captured");
                 captureFace();
+                livenessTimeoutRef.current = null;
               }, 1000);
             }
           }
@@ -169,6 +182,9 @@ export default function RegisterStep3Page() {
     return () => {
       if (detectionIntervalRef.current) {
         window.clearInterval(detectionIntervalRef.current);
+      }
+      if (livenessTimeoutRef.current) {
+        window.clearTimeout(livenessTimeoutRef.current);
       }
     };
   }, [modelsLoaded, currentStep, isCompleted, captureFace]);
