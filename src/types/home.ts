@@ -2,9 +2,9 @@ import type { ApiResponse } from "./api";
 
 // 미결 전자계약 항목
 export interface PendingContractItem {
-  type: "CONTRACT" | "SAFETY_LOG";
-  contractId?: number;
-  safetyLogId?: number;
+  type: "CONTRACT" | "SAFETY_LOG" | "SAFETY_EDUCATION";
+  contractId?: number | null;
+  safetyLogId?: number | null;
   siteId: number;
   siteName: string;
 }
