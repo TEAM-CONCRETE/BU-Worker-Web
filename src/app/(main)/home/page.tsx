@@ -27,7 +27,7 @@ export default function HomePage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-worker-neutral-50 pb-24">
+    <div className="flex min-h-screen flex-col bg-worker-neutral-50 pb-24 safe-area-inset-top">
       <div className="flex w-full max-w-[353px] mx-auto flex-col px-4 pt-4">
         <section className="mb-6">
           <h1 className="text-xl font-semibold text-[#12436d] mb-2">

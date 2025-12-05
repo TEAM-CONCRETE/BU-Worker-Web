@@ -202,7 +202,7 @@ export default function AttendancePage() {
         </div>
       )}
 
-      <div className="flex w-full max-w-[353px] mx-auto flex-col pt-[56px]">
+      <div className="flex w-full max-w-[353px] mx-auto flex-col pt-[72px]">
         {siteName && (
           <section className="px-4 pt-4 pb-2">
             <p className="text-lg font-bold text-[#6b7280]">{siteName}</p>

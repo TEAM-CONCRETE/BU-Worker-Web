@@ -16,7 +16,7 @@ export default function MyPage() {
       <Header title="마이페이지" />
 
       <div className="flex w-full max-w-[353px] mx-auto flex-col pt-[56px] px-4">
-        <section className="mt-3">
+        <section className="mt-6">
           <div className="bg-white rounded-2xl border border-[#e5e7eb] px-4 py-5 flex flex-col items-center">
             <div className="w-[72px] h-[72px] rounded-full bg-[#e5e7eb] flex items-center justify-center mb-4">
               <span className="text-[28px] text-[#4b5563] font-medium">
