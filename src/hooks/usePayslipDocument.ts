@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { salaryApi } from "@/lib/api/salary";
+import { useAuthStore } from "@/store/authStore";
 
-export function usePayslipDocument(payrollId: number) {
+export function usePayslipDocument() {
+  const user = useAuthStore((state) => state.user);
+  const employeeId = user?.employeeId;
+
   return useQuery({
-    queryKey: ["payslip", "document", payrollId],
+    queryKey: ["payslip", "document", employeeId],
     queryFn: async () => {
-      const response = await salaryApi.getPayslipDocument(payrollId);
+      if (!employeeId) {
+        throw new Error("employeeId를 찾을 수 없습니다.");
+      }
+      const response = await salaryApi.getPayslipDocument(employeeId);
 
       if (!response.success || !response.data) {
         throw new Error(
@@ -15,7 +22,7 @@ export function usePayslipDocument(payrollId: number) {
 
       return response;
     },
-    enabled: !!payrollId,
+    enabled: !!employeeId,
     retry: 3,
     retryDelay: 1000,
   });

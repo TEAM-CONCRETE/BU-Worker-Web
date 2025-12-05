@@ -1,21 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Header } from "@/components/common";
 import { PdfViewer } from "@/components/ui/pdf-viewer";
 import { usePayslipDocument } from "@/hooks/usePayslipDocument";
 
 export default function PayslipViewPage() {
-  const params = useParams();
   const router = useRouter();
-  const payrollId = Number(params.payrollId);
 
-  const {
-    data: documentData,
-    isLoading,
-    error,
-  } = usePayslipDocument(payrollId);
+  const { data: documentData, isLoading, error } = usePayslipDocument();
 
   const handleBackClick = () => {
     router.back();

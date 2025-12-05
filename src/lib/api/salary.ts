@@ -30,10 +30,10 @@ export const salaryApi = {
 
   // 급여명세서 PDF 조회 (Signed URL 발급)
   getPayslipDocument: async (
-    payrollId: number
+    employeeId: number
   ): Promise<DocumentUrlApiResponse> => {
     return apiClient<DocumentUrlApiResponse>(
-      `/v1/documents/payroll/${payrollId}`,
+      `/v1/documents/payslips/${employeeId}`,
       {
         method: "GET",
       }
